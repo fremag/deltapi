@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dummy-api", "dummy-api\dummy-api.csproj", "{A0E2C090-306C-4497-ABDC-9CC4BCC6C68E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deltapi-engine", "deltapi-engine\deltapi-engine.csproj", "{776F8453-4E83-45B4-850D-9931C6F52DCF}"
@@ -9,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deltapi", "deltapi\deltapi.csproj", "{4022C1DA-BA80-4A9F-8897-D8BB7FAB27A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deltapi-utils", "deltapi-utils\deltapi-utils.csproj", "{2343F890-31BA-4E74-BA82-6038927E8728}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deltapi-ui", "deltapi-ui\deltapi-ui.csproj", "{2011EE6B-C88F-4B13-AAA3-E7965B44C640}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +39,9 @@ Global
 		{2343F890-31BA-4E74-BA82-6038927E8728}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2343F890-31BA-4E74-BA82-6038927E8728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2343F890-31BA-4E74-BA82-6038927E8728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2011EE6B-C88F-4B13-AAA3-E7965B44C640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2011EE6B-C88F-4B13-AAA3-E7965B44C640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2011EE6B-C88F-4B13-AAA3-E7965B44C640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2011EE6B-C88F-4B13-AAA3-E7965B44C640}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
