@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>deltapi_engine</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NLog" Version="5.0.1" />
+      <PackageReference Include="System.IO.Abstractions" Version="17.0.23" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\deltapi-utils\deltapi-utils.csproj" />
+    </ItemGroup>
+
+</Project>

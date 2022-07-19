@@ -1,0 +1,8 @@
+﻿#Verb,Url,Data
+POST,Random/1234
+GET,Info
+GET,Random
+GET,Random
+GET,Random
+DELETE,Random
+GET,Random

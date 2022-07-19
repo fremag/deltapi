@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dummy-api", "dummy-api\dummy-api.csproj", "{A0E2C090-306C-4497-ABDC-9CC4BCC6C68E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deltapi-engine", "deltapi-engine\deltapi-engine.csproj", "{776F8453-4E83-45B4-850D-9931C6F52DCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deltapi-tests", "deltapi-tests\deltapi-tests.csproj", "{7083F27A-E5BF-43FF-9F0A-D685EF38F506}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deltapi", "deltapi\deltapi.csproj", "{4022C1DA-BA80-4A9F-8897-D8BB7FAB27A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deltapi-utils", "deltapi-utils\deltapi-utils.csproj", "{2343F890-31BA-4E74-BA82-6038927E8728}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A0E2C090-306C-4497-ABDC-9CC4BCC6C68E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0E2C090-306C-4497-ABDC-9CC4BCC6C68E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0E2C090-306C-4497-ABDC-9CC4BCC6C68E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0E2C090-306C-4497-ABDC-9CC4BCC6C68E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{776F8453-4E83-45B4-850D-9931C6F52DCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{776F8453-4E83-45B4-850D-9931C6F52DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{776F8453-4E83-45B4-850D-9931C6F52DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{776F8453-4E83-45B4-850D-9931C6F52DCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7083F27A-E5BF-43FF-9F0A-D685EF38F506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7083F27A-E5BF-43FF-9F0A-D685EF38F506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7083F27A-E5BF-43FF-9F0A-D685EF38F506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7083F27A-E5BF-43FF-9F0A-D685EF38F506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4022C1DA-BA80-4A9F-8897-D8BB7FAB27A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4022C1DA-BA80-4A9F-8897-D8BB7FAB27A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4022C1DA-BA80-4A9F-8897-D8BB7FAB27A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4022C1DA-BA80-4A9F-8897-D8BB7FAB27A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2343F890-31BA-4E74-BA82-6038927E8728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2343F890-31BA-4E74-BA82-6038927E8728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2343F890-31BA-4E74-BA82-6038927E8728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2343F890-31BA-4E74-BA82-6038927E8728}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
