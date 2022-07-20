@@ -12,4 +12,8 @@
     <PackageReference Include="GridCore" Version="5.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data" />
+  </ItemGroup>
+
 </Project>
