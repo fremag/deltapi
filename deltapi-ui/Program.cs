@@ -1,8 +1,13 @@
+using BlazorStrap;
+using deltapi_engine;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazorStrap();
+builder.Services.AddSingleton<IDateTimeService>(new DateTimeService());
 
 var app = builder.Build();
 

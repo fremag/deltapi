@@ -2,18 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>deltapi_ui</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BlazorStrap" Version="5.0.105.4262022" />
     <PackageReference Include="GridBlazor" Version="3.4.0" />
     <PackageReference Include="GridCore" Version="5.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Data" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\deltapi-engine\deltapi-engine.csproj" />
   </ItemGroup>
 
 </Project>

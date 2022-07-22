@@ -1,4 +1,31 @@
 ﻿@page "/"
+@using deltapi_engine
+@inherits MainComponent
 
 <PageTitle>DeltApi</PageTitle>
 
+<BSForm OnSubmit="@RunEngine" Model="@RunConfigModel">
+    <BSCol Column="auto">
+        <BSLabel >Server A</BSLabel>
+        <BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerA"/>
+    </BSCol>
+    <BSCol Column="auto">
+        <BSLabel>Server B</BSLabel>
+        <BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerB"/>
+    </BSCol>
+    <BSCol Column="auto">
+        <BSButton Color="BSColor.Primary" IsSubmit="true" MarginBottom="Margins.Medium">Run</BSButton>
+    </BSCol>
+</BSForm>
+
+<InputFile OnChange="@LoadFiles" multiple />
+
+
+@if (loadingTask is {IsCompleted: true })
+{
+    <GridComponent T="DeltApiAction" Grid="@actionGrid"></GridComponent>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
