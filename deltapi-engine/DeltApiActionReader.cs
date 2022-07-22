@@ -25,13 +25,34 @@ public class DeltApiActionReader
 
         Logger.ExtInfo("Reading...", new {path});
         var lines = FileSystem.File.ReadAllLines(path);
-        var deltApiActions = lines.Where(line => ! line.StartsWith("#")).Select(Parse).ToList();
+        var deltApiActions = ReadActions(lines).ToList();
         Logger.ExtInfo("Read.", new {deltApiActions.Count, path});
 
         return deltApiActions;
     }
+    
+    public static  IEnumerable<DeltApiAction> ReadActions(IEnumerable<string> lines) => lines.Where(line => ! line.StartsWith("#") && ! string.IsNullOrEmpty(line.Trim())).Select(Parse);
 
-    private DeltApiAction Parse(string line)
+    public static async IAsyncEnumerable<DeltApiAction> ReadActions(StreamReader reader)
+    {
+        string line;
+        while ((line = await reader.ReadLineAsync()) != null)
+        {
+            if (line.StartsWith("#"))
+            {
+                continue;
+            }
+
+            line = line.Trim();
+            if (string.IsNullOrEmpty(line))
+            {
+                continue;
+            }
+            yield return Parse(line);
+        }
+    } 
+
+    public static DeltApiAction Parse(string line)
     {
         var items = line.Split(',');
         if (!Enum.TryParse<Verbs>(items[0], ignoreCase: true, out var verb))
