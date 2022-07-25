@@ -4,7 +4,7 @@
 
 <PageTitle>DeltApi</PageTitle>
 
-<BSForm OnSubmit="@RunEngine" Model="@RunConfigModel">
+<BSForm OnSubmit="@RunEngine" Model="@RunConfigModel" IsRow="true">
     <BSCol Column="auto">
         <BSLabel >Server A</BSLabel>
         <BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerA"/>
@@ -14,16 +14,16 @@
         <BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerB"/>
     </BSCol>
     <BSCol Column="auto">
+        <InputFile OnChange="@LoadFiles" multiple>TOTO</InputFile>
+    </BSCol>
+    <BSCol Column="auto">
         <BSButton Color="BSColor.Primary" IsSubmit="true" MarginBottom="Margins.Medium">Run</BSButton>
     </BSCol>
 </BSForm>
 
-<InputFile OnChange="@LoadFiles" multiple />
-
-
 @if (loadingTask is {IsCompleted: true })
 {
-    <GridComponent T="DeltApiAction" Grid="@actionGrid"></GridComponent>
+    <GridComponent T="DeltApiActionReport" Grid="@reportGrid" @ref="@reportGridComponent" />
 }
 else
 {

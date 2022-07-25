@@ -4,36 +4,12 @@ using NLog;
 
 namespace deltapi_engine;
 
-public class DeltApiActionReader
+public class DeltApiActionReader : IDeltApiActionReader
 {
-    private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+    protected static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+    public IEnumerable<DeltApiAction> ReadActions(IEnumerable<string> lines) => lines.Where(line => ! line.StartsWith("#") && ! string.IsNullOrEmpty(line.Trim())).Select(Parse);
 
-    public DeltApiActionReader(IFileSystem fileSystem)
-    {
-        FileSystem = fileSystem;
-    }
-
-    private IFileSystem FileSystem { get; set; }
-    
-    public List<DeltApiAction> ReadActions(string path)
-    {
-        if (! FileSystem.File.Exists(path))
-        {
-            Logger.Error($"{nameof(ReadActions)}: file not found ! {path}");
-            throw new FileNotFoundException(path);
-        }
-
-        Logger.ExtInfo("Reading...", new {path});
-        var lines = FileSystem.File.ReadAllLines(path);
-        var deltApiActions = ReadActions(lines).ToList();
-        Logger.ExtInfo("Read.", new {deltApiActions.Count, path});
-
-        return deltApiActions;
-    }
-    
-    public static  IEnumerable<DeltApiAction> ReadActions(IEnumerable<string> lines) => lines.Where(line => ! line.StartsWith("#") && ! string.IsNullOrEmpty(line.Trim())).Select(Parse);
-
-    public static async IAsyncEnumerable<DeltApiAction> ReadActions(StreamReader reader)
+    public async IAsyncEnumerable<DeltApiAction> ReadActions(StreamReader reader)
     {
         string line;
         while ((line = await reader.ReadLineAsync()) != null)
@@ -52,7 +28,7 @@ public class DeltApiActionReader
         }
     } 
 
-    public static DeltApiAction Parse(string line)
+    public DeltApiAction Parse(string line)
     {
         var items = line.Split(',');
         if (!Enum.TryParse<Verbs>(items[0], ignoreCase: true, out var verb))
@@ -74,4 +50,31 @@ public class DeltApiActionReader
             Data = data
         };
     }
+}
+
+public class DeltApiActionFileReader : DeltApiActionReader
+{
+    private IFileSystem FileSystem { get; set; }
+
+    public DeltApiActionFileReader(IFileSystem fileSystem)
+    {
+        FileSystem = fileSystem;
+    }
+
+    public List<DeltApiAction> ReadActions(string path)
+    {
+        if (! FileSystem.File.Exists(path))
+        {
+            Logger.Error($"{nameof(ReadActions)}: file not found ! {path}");
+            throw new FileNotFoundException(path);
+        }
+
+        Logger.ExtInfo("Reading...", new {path});
+        var lines = FileSystem.File.ReadAllLines(path);
+        var deltApiActions = ReadActions(lines).ToList();
+        Logger.ExtInfo("Read.", new {deltApiActions.Count, path});
+
+        return deltApiActions;
+    }
+
 }
