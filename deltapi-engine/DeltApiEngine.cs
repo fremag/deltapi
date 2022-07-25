@@ -10,30 +10,27 @@ public class DeltApiEngine
     private IHttpClient ClientA { get; }
     private IHttpClient ClientB { get; }
     private IDateTimeService DateTimeService { get; }
-    private List<DeltApiAction> Actions { get; }
-    public event Action<DeltApiActionReport> ReportPublished;
+    public event Action<int, DeltApiActionReport> ActionReportPublished;
     
-    public DeltApiEngine(IHttpClient clientA,IHttpClient  clientB, List<DeltApiAction> actions, IDateTimeService dateTimeService)
+    public DeltApiEngine(IHttpClient clientA, IHttpClient  clientB, IDateTimeService dateTimeService)
     {
         ClientA = clientA;
         ClientB = clientB;
-        Actions = actions;
         DateTimeService = dateTimeService;
     }
 
-    public async Task<DeltApiReport> Run()
+    public async Task<DeltApiReport> Run(List<DeltApiAction> actions)
     {
         var begin = DateTimeService.Now;
-        var reports = new DeltApiActionReport[Actions.Count];
+        var reports = new DeltApiActionReport[actions.Count];
         
-        for (var i = 0; i < Actions.Count; i++)
+        for (var i = 0; i < actions.Count; i++)
         {
-            var action = Actions[i];
-            var resultA = await Run(ClientA, action);
-            var resultB = await Run(ClientB, action);
-            var actionReport = Compare(action, resultA, resultB);
+            var action = actions[i];
+            var actionReport = await Run(action);
+
             reports[i] = actionReport;
-            ReportPublished?.Invoke(actionReport);
+            ActionReportPublished?.Invoke(i, actionReport);
         }
 
         var end = DateTimeService.Now;
@@ -45,6 +42,14 @@ public class DeltApiEngine
         };
 
         return report;
+    }
+
+    public async Task<DeltApiActionReport> Run(DeltApiAction action)
+    {
+        var resultA = await Run(ClientA, action);
+        var resultB = await Run(ClientB, action);
+        var actionReport = Compare(action, resultA, resultB);
+        return actionReport;
     }
 
     private DeltApiActionReport Compare(DeltApiAction action, DeltApiActionResult resultA, DeltApiActionResult resultB)

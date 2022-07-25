@@ -24,7 +24,7 @@ public static class Program
     private static async Task Run(Options options)
     {
         var fileSystem = new FileSystem();
-        DeltApiActionReader reader = new DeltApiActionReader(fileSystem);
+        DeltApiActionFileReader reader = new DeltApiActionFileReader(fileSystem);
         List<DeltApiAction> actions = new List<DeltApiAction>();
         foreach (var file in options.Files)
         {
@@ -33,9 +33,9 @@ public static class Program
         
         var clientA = new BasicHttpClient(options.ServerA);
         var clientB = new BasicHttpClient(options.ServerB);
-        var engine = new DeltApiEngine(clientA, clientB, actions, new DateTimeService());
-        engine.ReportPublished += OnReportPublished;
-        var report = await engine.Run();
+        var engine = new DeltApiEngine(clientA, clientB, new DateTimeService());
+        engine.ActionReportPublished += OnActionReportPublished;
+        var report = await engine.Run(actions);
         var nbSuccess = report.Reports.Count(actionReport => actionReport.Status == ReportStatus.Success);
         var nbFailure = report.Reports.Count(actionReport => actionReport.Status == ReportStatus.Failure);
 
@@ -49,8 +49,8 @@ public static class Program
         Logger.ExtInfo(new {nbSuccess, nbFailure, report.TotalTime});
     }
 
-    private static void OnReportPublished(DeltApiActionReport actionReport)
+    private static void OnActionReportPublished(int i, DeltApiActionReport actionReport)
     {
-        StatusLogger.Info($"[{actionReport.Status}] {actionReport.Action.Verb,-7} {actionReport.Action.Url}");
+        StatusLogger.Info($"#{i}\t[{actionReport.Status}]\t{actionReport.Action.Verb,-7}\t{actionReport.Action.Url}");
     }
 }

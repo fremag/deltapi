@@ -2,7 +2,7 @@
 
 namespace deltapi_engine;
 
-public enum ReportStatus {Success, Failure}
+public enum ReportStatus {Waiting, Running, Success, Failure}
 [DebuggerDisplay("{DebugString}")]
 public class DeltApiActionReport
 {

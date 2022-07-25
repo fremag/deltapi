@@ -8,6 +8,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazorStrap();
 builder.Services.AddSingleton<IDateTimeService>(new DateTimeService());
+builder.Services.AddScoped<IDeltApiActionReader, DeltApiActionReader>();
 
 var app = builder.Build();
 
@@ -25,6 +26,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
