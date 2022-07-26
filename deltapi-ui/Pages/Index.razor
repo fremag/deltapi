@@ -23,7 +23,27 @@
 
 @if (loadingTask is {IsCompleted: true })
 {
-    <GridComponent T="DeltApiActionReport" Grid="@reportGrid" @ref="@reportGridComponent" />
+    <GridComponent T="DeltApiActionReport" Grid="@reportGrid" @ref="@reportGridComponent" OnRowClicked="OnRowClicked"/>
+    <BSContainer>
+        <BSRow>
+        <BSCol>
+            <BSCard CardType="CardType.Card">
+                <BSCard CardType="CardType.Header">Server A: @StatusA</BSCard>
+                <BSCard CardType="CardType.Body">
+                    @ContentA
+                </BSCard>
+            </BSCard>
+        </BSCol>
+        <BSCol>
+            <BSCard CardType="CardType.Card">
+                <BSCard CardType="CardType.Header">Server B: @StatusB</BSCard>
+                <BSCard CardType="CardType.Body">
+                    @ContentB
+                </BSCard>
+            </BSCard>
+        </BSCol>
+        </BSRow>
+    </BSContainer>
 }
 else
 {
