@@ -1,4 +1,4 @@
-﻿using BlazorStrap;
+﻿using System.Text.Json;
 using deltapi_engine;
 using GridBlazor;
 using GridBlazor.Pages;
@@ -20,6 +20,10 @@ public class MainComponent : ComponentBase
     IDeltApiActionReader DeltApiActionReader { get; set; }
     
     protected RunConfig RunConfigModel { get; } = new();
+    protected string ContentA { get; private set; }
+    protected string ContentB { get; private set; }
+    protected string StatusA { get; private set; }
+    protected string StatusB { get; private set; }
 
     protected class RunConfig
     {
@@ -38,6 +42,7 @@ public class MainComponent : ComponentBase
         var reportQuery = new QueryDictionary<StringValues> { { "grid-page", "1" } };
         var reportClient = new GridClient<DeltApiActionReport>(GetReportRows, reportQuery, false, "reportGrid", GetReportColumns);
         reportGrid = reportClient.Grid;
+        reportClient.Selectable(true);
         reportGrid.SetRowCssClassesContraint(report =>
         {
             switch (report.Status)
@@ -65,8 +70,8 @@ public class MainComponent : ComponentBase
         columns.Add(a => a.Status);
         columns.Add(a => a.Action.Verb).Titled("Verb");
         columns.Add(a => a.Action.Url).Titled("Url");
-        columns.Add(a => a.ResultA.Duration).Titled("Time (A)");
-        columns.Add(a => a.ResultB.Duration).Titled("Time (B)");
+        columns.Add(a => a.ResultA.Duration.TotalMilliseconds).Titled("Time A (ms)").Format("{0:###,##0.00}");
+        columns.Add(a => a.ResultB.Duration.TotalMilliseconds).Titled("Time B (ms)").Format("{0:###,##0.00}");
     }
 
     private ItemsDTO<DeltApiActionReport> GetReportRows(QueryDictionary<StringValues> queryDictionary)
@@ -124,5 +129,22 @@ public class MainComponent : ComponentBase
             await Task.Delay(1_000);
         }
     }
+    
+    protected void OnRowClicked(object obj)
+    {
+        if (obj is DeltApiActionReport report)
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            ContentA = JsonSerializer.Serialize(report.ResultA.Content, options);
+            ContentB = JsonSerializer.Serialize(report.ResultB.Content, options);
+            StatusA = report.ResultA.StatusCode?.ToString();
+            StatusB = report.ResultB.StatusCode?.ToString();
+        }
+        StateHasChanged();
+    }
+
 }
 
