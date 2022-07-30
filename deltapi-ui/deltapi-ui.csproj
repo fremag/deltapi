@@ -11,14 +11,17 @@
     <PackageReference Include="BlazorStrap" Version="5.0.105.4262022" />
     <PackageReference Include="GridBlazor" Version="3.4.0" />
     <PackageReference Include="GridCore" Version="5.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data" />
+    <PackageReference Include="NLog" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\deltapi-engine\deltapi-engine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

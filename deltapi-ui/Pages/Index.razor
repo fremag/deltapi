@@ -4,23 +4,6 @@
 
 <PageTitle>DeltApi</PageTitle>
 
-<BSForm OnSubmit="@RunEngine" Model="@RunConfigModel" IsRow="true">
-    <BSCol Column="auto">
-        <BSLabel >Server A</BSLabel>
-        <BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerA"/>
-    </BSCol>
-    <BSCol Column="auto">
-        <BSLabel>Server B</BSLabel>
-        <BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerB"/>
-    </BSCol>
-    <BSCol Column="auto">
-        <InputFile OnChange="@LoadFiles" multiple></InputFile>
-    </BSCol>
-    <BSCol Column="auto">
-        <BSButton Color="BSColor.Primary" IsSubmit="true" MarginBottom="Margins.Medium">Run</BSButton>
-    </BSCol>
-</BSForm>
-
 @if (loadingTask is {IsCompleted: true })
 {
     <BSContainer Container="Container.Fluid">
@@ -29,22 +12,34 @@
                 <BSCard CardType="CardType.Card">
                     <BSCard CardType="CardType.Header">Actions</BSCard>
                     <BSCard CardType="CardType.Body">
+                        <InputFile OnChange="@LoadFiles" multiple></InputFile>
+                        <BSButtonGroup>
+                            <BSButton Color="BSColor.Primary" OnClick="RunEngine">@Icon("media-play")</BSButton>
+                            <BSButton Color="BSColor.Primary" OnClick="PauseEngine">@Icon("media-pause")</BSButton>
+                            <BSButton Color="BSColor.Primary" OnClick="StopEngine">@Icon("media-stop")</BSButton>
+                        </BSButtonGroup>
                         <GridComponent T="DeltApiActionReport" Grid="@reportGrid" @ref="@reportGridComponent" OnRowClicked="OnRowClicked"/>
                     </BSCard>
                 </BSCard>
             </BSCol>
             <BSCol Class="col-4">
                 <BSCard CardType="CardType.Card">
-                    <BSCard CardType="CardType.Header">Server A: @StatusA</BSCard>
+                    <BSCard CardType="CardType.Header">
+                        <BSLabel >Server A</BSLabel><BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerA"/>
+                    </BSCard>
                     <BSCard CardType="CardType.Body">
+                        <BSAlert Color="BSColor.Info">@StatusA</BSAlert>
                         @ContentA
                     </BSCard>
                 </BSCard>
             </BSCol>
             <BSCol Class="col-4">
                 <BSCard CardType="CardType.Card">
-                    <BSCard CardType="CardType.Header">Server B: @StatusB</BSCard>
+                    <BSCard CardType="CardType.Header">
+                        <BSLabel>Server B</BSLabel><BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerB"/>
+                    </BSCard>
                     <BSCard CardType="CardType.Body">
+                        <BSAlert Color="BSColor.Info">@StatusB</BSAlert>
                         @ContentB
                     </BSCard>
                 </BSCard>
@@ -54,5 +49,7 @@
 }
 else
 {
-    <p><em>Loading...</em></p>
+    <p>
+        <em>Loading...</em>
+    </p>
 }
