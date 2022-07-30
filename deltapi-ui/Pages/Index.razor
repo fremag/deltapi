@@ -14,7 +14,7 @@
         <BSInput InputType="InputType.Text" @bind-Value="@RunConfigModel.ServerB"/>
     </BSCol>
     <BSCol Column="auto">
-        <InputFile OnChange="@LoadFiles" multiple>TOTO</InputFile>
+        <InputFile OnChange="@LoadFiles" multiple></InputFile>
     </BSCol>
     <BSCol Column="auto">
         <BSButton Color="BSColor.Primary" IsSubmit="true" MarginBottom="Margins.Medium">Run</BSButton>
@@ -23,25 +23,32 @@
 
 @if (loadingTask is {IsCompleted: true })
 {
-    <GridComponent T="DeltApiActionReport" Grid="@reportGrid" @ref="@reportGridComponent" OnRowClicked="OnRowClicked"/>
-    <BSContainer>
+    <BSContainer Container="Container.Fluid">
         <BSRow>
-        <BSCol>
-            <BSCard CardType="CardType.Card">
-                <BSCard CardType="CardType.Header">Server A: @StatusA</BSCard>
-                <BSCard CardType="CardType.Body">
-                    @ContentA
+            <BSCol Class="col-4">
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Header">Actions</BSCard>
+                    <BSCard CardType="CardType.Body">
+                        <GridComponent T="DeltApiActionReport" Grid="@reportGrid" @ref="@reportGridComponent" OnRowClicked="OnRowClicked"/>
+                    </BSCard>
                 </BSCard>
-            </BSCard>
-        </BSCol>
-        <BSCol>
-            <BSCard CardType="CardType.Card">
-                <BSCard CardType="CardType.Header">Server B: @StatusB</BSCard>
-                <BSCard CardType="CardType.Body">
-                    @ContentB
+            </BSCol>
+            <BSCol Class="col-4">
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Header">Server A: @StatusA</BSCard>
+                    <BSCard CardType="CardType.Body">
+                        @ContentA
+                    </BSCard>
                 </BSCard>
-            </BSCard>
-        </BSCol>
+            </BSCol>
+            <BSCol Class="col-4">
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Header">Server B: @StatusB</BSCard>
+                    <BSCard CardType="CardType.Body">
+                        @ContentB
+                    </BSCard>
+                </BSCard>
+            </BSCol>
         </BSRow>
     </BSContainer>
 }

@@ -70,8 +70,8 @@ public class MainComponent : ComponentBase
         columns.Add(a => a.Status);
         columns.Add(a => a.Action.Verb).Titled("Verb");
         columns.Add(a => a.Action.Url).Titled("Url");
-        columns.Add(a => a.ResultA.Duration.TotalMilliseconds).Titled("Time A (ms)").Format("{0:###,##0.00}");
-        columns.Add(a => a.ResultB.Duration.TotalMilliseconds).Titled("Time B (ms)").Format("{0:###,##0.00}");
+        columns.Add(a => a.ResultA.Duration.TotalMilliseconds).Titled("Time A (ms)").Format("{0:###,##0.00}").SetCellCssClassesContraint(_ => "number");
+        columns.Add(a => a.ResultB.Duration.TotalMilliseconds).Titled("Time B (ms)").Format("{0:###,##0.00}").SetCellCssClassesContraint(_ => "number");
     }
 
     private ItemsDTO<DeltApiActionReport> GetReportRows(QueryDictionary<StringValues> queryDictionary)
@@ -95,7 +95,7 @@ public class MainComponent : ComponentBase
                     Action = action,
                     Status = ReportStatus.Waiting,
                     ResultA = new DeltApiActionResult{Content = null, Duration = TimeSpan.Zero, StatusCode = null},
-                    ResultB = new DeltApiActionResult{Content = null, Duration = TimeSpan.Zero, StatusCode = null},
+                    ResultB = new DeltApiActionResult{Content = null, Duration = TimeSpan.Zero, StatusCode = null}
                 });
             }
         }
