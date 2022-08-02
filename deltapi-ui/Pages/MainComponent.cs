@@ -35,6 +35,8 @@ public class MainComponent : ComponentBase
     {
         public string ServerA { get; set; } = "http://localhost:5000";
         public string ServerB { get; set; } = "http://localhost:6000";
+        public int DelayMs { get; set; } = 100;
+        public bool PauseAfterError { get; set; } = true;
     }
     
     protected CGrid<DeltApiActionReport> reportGrid;
@@ -164,7 +166,6 @@ public class MainComponent : ComponentBase
             var actionReport = Reports[i];
             while (CurrentStatus == Status.Paused )
             {
-                Logger.ExtInfo("Pause...", new {CurrentStatus , Progress = $"{i+1} / {Reports.Count}" });
                 await Task.Delay(1_000);
             }
 
@@ -177,12 +178,18 @@ public class MainComponent : ComponentBase
             Logger.ExtInfo("Run...", new {CurrentStatus , Progress = $"{i+1} / {Reports.Count}" });
             actionReport.Status = ReportStatus.Running;
             await reportGridComponent.UpdateGrid();
-            await Task.Delay(100);
+
             var action = actionReport.Action;
             var report = await engine.Run(action);
             Reports[i] = report;
+            if (RunConfigModel.PauseAfterError && report.Status == ReportStatus.Failure )
+            {
+                Logger.ExtInfo("Report Status", new {CurrentStatus , Progress = $"{i+1} / {Reports.Count}", ReportStatus=report.Status });
+                CurrentStatus = Status.Paused;
+            }
+            
             await reportGridComponent.UpdateGrid();
-            await Task.Delay(1_000);
+            await Task.Delay(RunConfigModel.DelayMs);
         }
     }
     

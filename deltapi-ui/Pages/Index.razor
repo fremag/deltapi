@@ -17,7 +17,17 @@
                             <BSButton Color="BSColor.Primary" OnClick="RunEngine">@Icon("media-play")</BSButton>
                             <BSButton Color="BSColor.Primary" OnClick="PauseEngine">@Icon("media-pause")</BSButton>
                             <BSButton Color="BSColor.Primary" OnClick="StopEngine">@Icon("media-stop")</BSButton>
+                            <BSButton Color="BSColor.Primary" Target="properties">@Icon("wrench")</BSButton>
                         </BSButtonGroup>
+                        <BSCollapse DataId="properties">
+                            <BSCard CardType="CardType.Card">
+                                <BSLabel For="delayMs">Delay (ms)</BSLabel><BSInput Id="delayMs" InputType="InputType.Number" @bind-Value="@RunConfigModel.DelayMs"/>
+                                <div Class="@BS.Form_Check">
+                                    <BSLabel IsCheckLabel="true" For="pauseError">Pause after error</BSLabel>
+                                    <BSInputCheckbox Id="pauseError" @bind-Value="RunConfigModel.PauseAfterError" CheckedValue="true" UnCheckedValue="false"/> 
+                                </div>
+                            </BSCard>
+                        </BSCollapse>
                         <GridComponent T="DeltApiActionReport" Grid="@reportGrid" @ref="@reportGridComponent" OnRowClicked="OnRowClicked"/>
                     </BSCard>
                 </BSCard>
