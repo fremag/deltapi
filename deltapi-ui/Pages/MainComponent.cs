@@ -43,6 +43,9 @@ public class MainComponent : ComponentBase
     protected GridComponent<DeltApiActionReport> reportGridComponent;
     
     protected Task loadingTask;
+    private BasicHttpClient ClientA { get; set; }
+    private BasicHttpClient ClientB { get; set; }
+    private DeltApiEngine Engine { get; set; }
     private List<DeltApiActionReport> Reports { get; } = new();
     public Status CurrentStatus { get; set; } = Status.Ready; 
     
@@ -79,7 +82,7 @@ public class MainComponent : ComponentBase
         columns.Add(a => a.Status) 
             .Encoded(false)
             .Sanitized(false)
-            .RenderValueAs(report => Icon(report.Status switch
+            .RenderValueAs(report => Helper.Icon(report.Status switch
         {
             ReportStatus.Failure => "circle-x",
             ReportStatus.Running => "play-circle",
@@ -92,13 +95,24 @@ public class MainComponent : ComponentBase
         
         columns.Add(a => a.Action.Verb).Titled("Verb");
         columns.Add(a => a.Action.Url).Titled("Url");
+        columns.Add().RenderComponentAs<RunActionButton>(new List<Action<object>> { RunAction });
         columns.Add(a => a.ResultA.Duration.TotalMilliseconds).Titled("A (ms)").Format("{0:###,##0.00}").SetCellCssClassesContraint(_ => "number");
         columns.Add(a => a.ResultB.Duration.TotalMilliseconds).Titled("B (ms)").Format("{0:###,##0.00}").SetCellCssClassesContraint(_ => "number");
     }
 
-    protected static MarkupString Icon(string name)
+    private async void RunAction(object obj)
     {
-        return (MarkupString)$"<span class=\"oi oi-{name}\"/>";
+        if (obj is not DeltApiActionReport deltApiActionReport)
+        {
+            return;
+        }
+
+        if (Engine == null)
+        {
+            Init();
+        }
+
+        await Run(deltApiActionReport);
     }
 
     private ItemsDTO<DeltApiActionReport> GetReportRows(QueryDictionary<StringValues> queryDictionary)
@@ -150,11 +164,8 @@ public class MainComponent : ComponentBase
             return;
         }
         CurrentStatus = Status.Running;
-        
-        var clientA = new BasicHttpClient(RunConfigModel.ServerA);
-        var clientB = new BasicHttpClient(RunConfigModel.ServerB);
 
-        var engine = new DeltApiEngine(clientA, clientB, DateTimeService);
+        Init();
         foreach (var actionReport in Reports)
         {
             actionReport.Status = ReportStatus.Waiting;
@@ -179,34 +190,55 @@ public class MainComponent : ComponentBase
             actionReport.Status = ReportStatus.Running;
             await reportGridComponent.UpdateGrid();
 
-            var action = actionReport.Action;
-            var report = await engine.Run(action);
-            Reports[i] = report;
-            if (RunConfigModel.PauseAfterError && report.Status == ReportStatus.Failure )
+            await Run(actionReport);
+            
+            if (RunConfigModel.PauseAfterError && actionReport.Status == ReportStatus.Failure )
             {
-                Logger.ExtInfo("Report Status", new {CurrentStatus , Progress = $"{i+1} / {Reports.Count}", ReportStatus=report.Status });
+                Logger.ExtInfo("Report Status", new {CurrentStatus , Progress = $"{i+1} / {Reports.Count}", ReportStatus=actionReport.Status });
                 CurrentStatus = Status.Paused;
             }
             
-            await reportGridComponent.UpdateGrid();
             await Task.Delay(RunConfigModel.DelayMs);
         }
     }
-    
+
+    private async Task Run(DeltApiActionReport deltApiActionReport)
+    {
+        var report = await Engine.Run(deltApiActionReport.Action);
+        deltApiActionReport.Update(report);
+        await reportGridComponent.UpdateGrid();
+        DisplayResults(deltApiActionReport);
+    }
+
+    private void Init()
+    {
+        ClientA = new BasicHttpClient(RunConfigModel.ServerA);
+        ClientB = new BasicHttpClient(RunConfigModel.ServerB);
+        Engine = new DeltApiEngine(ClientA, ClientB, DateTimeService);
+    }
+
     protected void OnRowClicked(object obj)
     {
-        if (obj is DeltApiActionReport report)
+        if (obj is not DeltApiActionReport report)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-            ContentA = ReferenceEquals(null, report.ResultA.Content) ? Icon("ban") : (MarkupString)JsonSerializer.Serialize(report.ResultA.Content, options);
-            ContentB = ReferenceEquals(null, report.ResultB.Content) ? Icon("ban") : (MarkupString)JsonSerializer.Serialize(report.ResultB.Content, options);
-            
-            StatusA = report.ResultA.StatusCode?.ToString();
-            StatusB = report.ResultB.StatusCode?.ToString();
+            return;
         }
+
+        DisplayResults(report);
+    }
+
+    private void DisplayResults(DeltApiActionReport report)
+    {
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+        ContentA = ReferenceEquals(null, report.ResultA.Content) ? Helper.Icon("ban") : (MarkupString)JsonSerializer.Serialize(report.ResultA.Content, options);
+        ContentB = ReferenceEquals(null, report.ResultB.Content) ? Helper.Icon("ban") : (MarkupString)JsonSerializer.Serialize(report.ResultB.Content, options);
+            
+        StatusA = report.ResultA.StatusCode?.ToString();
+        StatusB = report.ResultB.StatusCode?.ToString();
+
         StateHasChanged();
     }
 }

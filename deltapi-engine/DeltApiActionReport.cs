@@ -12,4 +12,11 @@ public class DeltApiActionReport
     public DeltApiActionResult ResultB { get; set; }
 
     public string DebugString => $"[{Status}] {Action.Verb} - {Action.Url}";
+
+    public void Update(DeltApiActionReport report)
+    {
+        Status = report.Status;
+        ResultA = report.ResultA;
+        ResultB = report.ResultB;
+    }
 }

@@ -1,0 +1,20 @@
+﻿@using deltapi_engine;
+@implements GridShared.Columns.ICustomGridComponent<DeltApiActionReport>
+
+<BSButton Class="btn-sm" OnClick="MyClickHandler">@Helper.Icon("media-play")</BSButton> 
+
+@code {
+    [Parameter]
+    public DeltApiActionReport Item { get; set; }
+
+    [CascadingParameter(Name = "GridComponent")]
+    public GridComponent<DeltApiActionReport> GridComponent { get; set; }
+
+    [Parameter]
+    public IList<Action<object>> Actions { get; set; }
+    
+    private void MyClickHandler()
+    {
+        Actions[0](Item);
+    }
+}

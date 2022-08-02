@@ -14,10 +14,10 @@
                     <BSCard CardType="CardType.Body">
                         <InputFile OnChange="@LoadFiles" multiple></InputFile>
                         <BSButtonGroup>
-                            <BSButton Color="BSColor.Primary" OnClick="RunEngine">@Icon("media-play")</BSButton>
-                            <BSButton Color="BSColor.Primary" OnClick="PauseEngine">@Icon("media-pause")</BSButton>
-                            <BSButton Color="BSColor.Primary" OnClick="StopEngine">@Icon("media-stop")</BSButton>
-                            <BSButton Color="BSColor.Primary" Target="properties">@Icon("wrench")</BSButton>
+                            <BSButton Color="BSColor.Primary" OnClick="RunEngine">@Helper.Icon("media-play")</BSButton>
+                            <BSButton Color="BSColor.Primary" OnClick="PauseEngine">@Helper.Icon("media-pause")</BSButton>
+                            <BSButton Color="BSColor.Primary" OnClick="StopEngine">@Helper.Icon("media-stop")</BSButton>
+                            <BSButton Color="BSColor.Primary" Target="properties">@Helper.Icon("wrench")</BSButton>
                         </BSButtonGroup>
                         <BSCollapse DataId="properties">
                             <BSCard CardType="CardType.Card">
